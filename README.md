@@ -53,3 +53,5 @@ php -S localhost:8080 -t /Applications/XAMPP/xamppfiles/htdocs/prestashop
 4. Back office: `http://localhost:8080/admin635tpjc6qfi4kszl8ot/index.php`
 
 > **Note:** MySQL must be started manually from the XAMPP control panel before running the script. The script only handles the PHP server — it does not start MySQL automatically because XAMPP manages it through its own GUI.
+
+> **Note:** MySQL must be started manually from the XAMPP control panel before running the script. The script only handles the PHP server — it does not start MySQL automatically because XAMPP manages it through its own GUI.
