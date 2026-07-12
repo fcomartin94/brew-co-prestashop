@@ -7,8 +7,9 @@ Specialty coffee store built with PrestaShop 8.1.7 as part of my ecommerce portf
 
 ## Stack
 - PrestaShop 8.1.7
-- PHP 8.5.7 (Homebrew)
-- MySQL via XAMPP
+- PHP 8.5.7 (Homebrew) — original local setup
+- MySQL via XAMPP — original local setup
+- Docker Compose — later re-validated on a containerized environment (see below)
 - Theme: Classic
 
 ## Features
@@ -54,4 +55,18 @@ php -S localhost:8080 -t /Applications/XAMPP/xamppfiles/htdocs/prestashop
 
 > **Note:** MySQL must be started manually from the XAMPP control panel before running the script. The script only handles the PHP server — it does not start MySQL automatically because XAMPP manages it through its own GUI.
 
-> **Note:** MySQL must be started manually from the XAMPP control panel before running the script. The script only handles the PHP server — it does not start MySQL automatically because XAMPP manages it through its own GUI.
+## Docker Environment
+
+This project was originally built on the XAMPP + Homebrew PHP setup described above.
+It was later re-validated on Docker Compose (`docker-compose.yml`), the same approach
+used across the rest of this portfolio, to confirm the store also runs cleanly in a
+containerized environment without the manual PHP/MySQL version juggling XAMPP
+required.
+
+```bash
+docker compose up -d
+```
+
+PrestaShop's install wizard loads correctly on `http://localhost:8082` (port 8082,
+chosen to avoid clashing with the other Dockerized projects in this portfolio, which
+use 8080 and 8081).
