@@ -22,16 +22,18 @@ Specialty coffee store built with PrestaShop 8.1.7 as part of my ecommerce portf
 
 ## Local Environment Setup
 
-### The Problem
-Setting up PrestaShop locally on macOS presented two main challenges:
+Running PrestaShop locally on macOS with XAMPP surfaced two conflicts: XAMPP's
+bundled PHP 8.2.4 lacks the `intl` extension PrestaShop requires (not viable to
+compile in manually), and XAMPP's MySQL competes with Homebrew's MySQL for port
+3306, so both can't run at once.
 
-1. **PHP compatibility**: XAMPP's built-in PHP 8.2.4 lacked the `intl` extension required by PrestaShop. Compiling it manually was not viable.
-2. **MySQL port conflict**: XAMPP's MySQL and Homebrew's MySQL both tried to use port 3306, preventing them from running simultaneously.
-
-### The Solution
-- Use **Homebrew PHP 8.5.7** (which includes `intl`) as the PHP server via the built-in development server (`php -S`).
-- Use **XAMPP's MySQL** as the database server, started via the XAMPP control panel.
-- The database was migrated from Homebrew MySQL to XAMPP MySQL by exporting with `mysqldump` and fixing collation incompatibilities (`utf8mb4_0900_ai_ci` → `utf8mb4_general_ci`).
+Resolved by splitting the two services across their working installs instead of
+patching either one: Homebrew PHP 8.5.7 (which already includes `intl`) serves
+the app via its built-in development server (`php -S`), while XAMPP's MySQL —
+started from its own control panel — remains the database server. The database
+was migrated from Homebrew MySQL to XAMPP MySQL via `mysqldump`, fixing a
+collation incompatibility in the process (`utf8mb4_0900_ai_ci` →
+`utf8mb4_general_ci`).
 
 ### Startup Script
 To simplify the startup process, a shell script was created:
