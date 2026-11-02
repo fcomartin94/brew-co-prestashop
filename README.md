@@ -20,9 +20,23 @@ Specialty coffee store built with PrestaShop 8.1.7 as part of my ecommerce portf
 - Bank transfer and cash on delivery payment methods
 - Custom store branding and logo
 
-## Local Environment Setup
+## Quick start (Docker)
 
-Running PrestaShop locally on macOS with XAMPP surfaced two conflicts: XAMPP's
+The recommended way to run the store, and the same approach used across the rest of
+this portfolio. It avoids the PHP/MySQL version juggling the original XAMPP setup
+required (see below). Requires Docker with Compose.
+
+```bash
+docker compose up -d
+```
+
+PrestaShop's install wizard loads correctly on `http://localhost:8082` (port 8082,
+chosen to avoid clashing with the other Dockerized projects in this portfolio, which
+use 8080 and 8081).
+
+## Original local setup (macOS, XAMPP + Homebrew PHP)
+
+The store was first built without Docker. Running PrestaShop locally on macOS with XAMPP surfaced two conflicts: XAMPP's
 bundled PHP 8.2.4 lacks the `intl` extension PrestaShop requires (not viable to
 compile in manually), and XAMPP's MySQL competes with Homebrew's MySQL for port
 3306, so both can't run at once.
@@ -35,40 +49,19 @@ was migrated from Homebrew MySQL to XAMPP MySQL via `mysqldump`, fixing a
 collation incompatibility in the process (`utf8mb4_0900_ai_ci` →
 `utf8mb4_general_ci`).
 
-### Startup Script
-To simplify the startup process, a shell script was created:
+### Startup script
 
-```bash
-#!/bin/bash
+[`start-brewco.sh`](start-brewco.sh) stops any previous PHP dev server and starts a new
+one on `localhost:8080`, pointing at the XAMPP `htdocs/prestashop` directory.
 
-echo "Stopping previous processes..."
-pkill -f "php -S localhost:8080" 2>/dev/null
-sleep 1
-
-echo "Starting PHP server for Brew & Co..."
-php -S localhost:8080 -t /Applications/XAMPP/xamppfiles/htdocs/prestashop
-```
-
-### How to Run
+### How to run
 1. Open XAMPP and click **Start** on MySQL
-2. Run the startup script: `~/Desktop/start-brewco.sh`
+2. Run the startup script: `./start-brewco.sh`
 3. Open `http://localhost:8080` in your browser
 4. Back office: `http://localhost:8080/admin635tpjc6qfi4kszl8ot/index.php`
 
 > **Note:** MySQL must be started manually from the XAMPP control panel before running the script. The script only handles the PHP server — it does not start MySQL automatically because XAMPP manages it through its own GUI.
 
-## Docker Environment
+## License
 
-This project was originally built on the XAMPP + Homebrew PHP setup described above.
-It was later re-validated on Docker Compose (`docker-compose.yml`), the same approach
-used across the rest of this portfolio, to confirm the store also runs cleanly in a
-containerized environment without the manual PHP/MySQL version juggling XAMPP
-required.
-
-```bash
-docker compose up -d
-```
-
-PrestaShop's install wizard loads correctly on `http://localhost:8082` (port 8082,
-chosen to avoid clashing with the other Dockerized projects in this portfolio, which
-use 8080 and 8081).
+Released under the [MIT License](LICENSE).
